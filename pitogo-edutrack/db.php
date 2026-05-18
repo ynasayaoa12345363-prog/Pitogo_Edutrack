@@ -11,7 +11,7 @@ if ($mysqlUrl) {
     $password = $url["pass"] ?? "";
 
     // FORCE YOUR ACTUAL DATABASE NAME
-    $database = "a264133_fu8h5bcm";
+    $database = isset($url["path"]) ? ltrim($url["path"], "/") : "railway";
 
 } else {
 
