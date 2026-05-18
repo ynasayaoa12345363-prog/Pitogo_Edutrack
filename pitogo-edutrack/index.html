@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pitogo EduTrack | Pitogo High School</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+:root {
+    --primary-navy: #0B1C3D;
+    --navy-dark: #061024;
+    --primary-blue: #0056B3;
+    --accent-gold: #FFC107;
+    --bg-light: #F8FAFC;
+    --text-main: #1E293B;
+    --text-muted: #64748B;
+    --border-light: #E2E8F0;
+    --danger: #EF4444;
+    --success: #10B981;
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-light);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .brand {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* NAVBAR */
+
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    padding: 20px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 50;
+    border-bottom: 1px solid rgba(226,232,240,0.5);
+    transition: var(--transition);
+}
+
+nav.scrolled {
+    padding: 14px 60px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+}
+
+.logo-box {
+    width: 52px;
+    height: 52px;
+    background: white;
+    border-radius: 14px;
+    border: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.brand-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--primary-navy);
+}
+
+.brand-subtitle {
+    font-size: 0.75rem;
+    color: var(--primary-blue);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nav-btn {
+    padding: 12px 28px;
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.nav-btn:hover {
+    background: var(--primary-navy);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,86,179,0.25);
+}
+
+/* HERO WITH SCHOOL BACKGROUND */
+
+.hero {
+    min-height: 100vh;
+    padding: 135px 20px 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    background:
+        linear-gradient(
+            rgba(11, 28, 61, 0.72),
+            rgba(11, 28, 61, 0.78)
+        ),
+        url('school-bg.jpg');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-logo {
+    width: 145px;
+    height: 145px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    padding: 12px;
+    border: 5px solid rgba(255,255,255,0.8);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    margin-bottom: 25px;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.hero-badge {
+    background: rgba(255,255,255,0.16);
+    color: white;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.hero-badge i {
+    margin-right: 8px;
+}
+
+.hero h1 {
+    font-size: 5rem;
+    font-weight: 800;
+    color: white;
+    line-height: 1.05;
+    margin-bottom: 24px;
+    letter-spacing: -2px;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.35);
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: rgba(255,255,255,0.88);
+    max-width: 760px;
+    margin-bottom: 38px;
+    line-height: 1.7;
+    text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.hero-actions {
+    animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.hero-main-btn {
+    padding: 18px 42px;
+    font-size: 1.05rem;
+    border-radius: 14px;
+    background: white;
+    color: var(--primary-navy);
+    font-weight: 800;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.hero-main-btn:hover {
+    background: var(--primary-blue);
+    color: white;
+}
+
+.hero-main-btn i {
+    margin-left: 8px;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 25px;
+    margin-top: 60px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeInUp 0.8s ease-out 0.8s both;
+}
+
+.stat-card {
+    background: rgba(255,255,255,0.14);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 25px 35px;
+    border-radius: 18px;
+    min-width: 180px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    background: rgba(255,255,255,0.22);
+}
+
+.stat-card h2 {
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.95rem;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 1.5rem;
+    animation: bounce 2s infinite;
+}
+
+/* FEATURES */
+
+.features {
+    padding: 100px 10%;
+    background: white;
+}
+
+.features.alt {
+    background: #F8FAFC;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-header h2 {
+    font-size: 2.6rem;
+    color: var(--primary-navy);
+    margin-bottom: 15px;
+}
+
+.section-header p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 35px;
+}
+
+.feature-card {
+    padding: 40px;
+    background: var(--bg-light);
+    border-radius: 22px;
+    border: 1px solid var(--border-light);
+    transition: var(--transition);
+}
+
+.features.alt .feature-card {
+    background: white;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    background: white;
+    box-shadow: 0 22px 45px rgba(0,0,0,0.08);
+    border-color: transparent;
+}
+
+.feature-icon {
+    width: 62px;
+    height: 62px;
+    background: rgba(0,86,179,0.1);
+    color: var(--primary-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    font-size: 1.5rem;
+    margin-bottom: 24px;
+    transition: var(--transition);
+}
+
+.feature-card:hover .feature-icon {
+    background: var(--primary-blue);
+    color: white;
+    transform: scale(1.1) rotate(5deg);
+}
+
+.feature-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+    color: var(--primary-navy);
+}
+
+.feature-card p {
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+
+/* CTA */
+
+.cta-section {
+    padding: 90px 10%;
+    background: linear-gradient(135deg, var(--primary-navy), #12356f);
+    color: white;
+    text-align: center;
+}
+
+.cta-section h2 {
+    font-size: 2.6rem;
+    margin-bottom: 15px;
+}
+
+.cta-section p {
+    max-width: 650px;
+    margin: 0 auto 30px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.7;
+}
+
+/* FOOTER */
+
+.site-footer {
+    background: var(--navy-dark);
+    color: #94A3B8;
+    padding: 80px 10% 30px;
+    position: relative;
+}
+
+.site-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-blue), var(--accent-gold));
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr;
+    gap: 60px;
+    margin-bottom: 60px;
+}
+
+.footer-brand h2 {
+    color: white;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.footer-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: white;
+    padding: 4px;
+}
+
+.footer-brand p {
+    line-height: 1.7;
+    max-width: 430px;
+}
+
+.footer-heading {
+    color: white;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    color: #94A3B8;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-links a:hover {
+    color: white;
+    transform: translateX(5px);
+    display: inline-block;
+}
+
+.contact-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.contact-item i {
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+}
+
+.contact-text h4 {
+    color: white;
+    margin-bottom: 5px;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.creator-tag {
+    background: rgba(255,255,255,0.05);
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.creator-tag:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-3px);
+}
+
+.creator-tag span {
+    color: var(--accent-gold);
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+/* MODALS */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11,28,61,0.62);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content,
+.modal-box {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 430px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.modal-header h2 {
+    color: var(--navy-dark);
+    font-size: 1.8rem;
+}
+
+.modal-header p {
+    color: var(--text-muted);
+}
+
+.input-group {
+    margin-bottom: 18px;
+    text-align: left;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-main);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid var(--border-light);
+    border-radius: 9px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    background: #F8FAFC;
+}
+
+.input-group input:focus {
+    border-color: var(--primary-blue);
+    background: white;
+    outline: none;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 39px;
+    cursor: pointer;
+    color: #64748B;
+}
+
+.forgot-password-link {
+    text-align: right;
+    margin-bottom: 16px;
+}
+
+.forgot-password-link a {
+    color: var(--primary-blue);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue), #004494);
+    border: none;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#error-message,
+#forgot-error-message {
+    display: none;
+    background: #FEF2F2;
+    color: var(--danger);
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#success-message {
+    display: none;
+    background: #DCFCE7;
+    color: #166534;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* TEAM */
+
+#teamModal .modal-box {
+    max-width: 850px;
+    padding: 50px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.team-card {
+    text-align: center;
+    padding: 30px 20px;
+    background: var(--bg-light);
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+}
+
+.team-photo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--primary-blue);
+}
+
+.team-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-card h3 {
+    color: var(--primary-navy);
+    margin-bottom: 5px;
+}
+
+.team-card p {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+/* ANIMATION */
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(22px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+    0%,20%,50%,80%,100% { transform: translateY(0) translateX(-50%); }
+    40% { transform: translateY(-18px) translateX(-50%); }
+    60% { transform: translateY(-9px) translateX(-50%); }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.8s all ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 900px) {
+    nav {
+        padding: 15px 25px;
+    }
+
+    .brand-subtitle {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 3.3rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .hero-logo {
+        width: 115px;
+        height: 115px;
+    }
+
+    .hero-stats {
+        flex-direction: column;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav id="navbar">
+    <div class="brand" onclick="window.scrollTo(0,0)">
+        <div class="logo-box">
+            <img src="school-logo.jpg" alt="Pitogo High School Logo">
+        </div>
+        <div>
+            <div class="brand-title">Pitogo High School</div>
+            <div class="brand-subtitle">Pitogo EduTrack</div>
+        </div>
+    </div>
+
+    <button class="nav-btn" onclick="openLoginModal()">Access Portal</button>
+</nav>
+
+<section class="hero">
+    <img src="school-logo.jpg" alt="Pitogo High School Logo" class="hero-logo">
+
+    <div class="hero-badge">
+        <i class="fa fa-shield-alt"></i>
+        Secure Pitogo EduTrack
+    </div>
+
+    <h1>Pitogo EduTrack <br> Digital Campus Portal</h1>
+
+    <p>
+        A modern school portal for students, parents, staff, and administrators — combining QR-based attendance, secure document requests, and protected account access in one organized system.
+    </p>
+
+    <button class="nav-btn hero-main-btn" onclick="openLoginModal()">
+        Access Portal <i class="fa fa-arrow-right"></i>
+    </button>
+
+    <div class="hero-stats">
+        <div class="stat-card">
+            <h2>100%</h2>
+            <p>Student Records</p>
+        </div>
+        <div class="stat-card">
+            <h2>24/7</h2>
+            <p>Portal Access</p>
+        </div>
+        <div class="stat-card">
+            <h2>QR</h2>
+            <p>Attendance</p>
+        </div>
+    </div>
+
+    <a href="#features" class="scroll-indicator">
+        <i class="fa fa-chevron-down"></i>
+    </a>
+</section>
+
+<section id="features" class="features">
+    <div class="section-header reveal">
+        <h2>Built for Secure School Access</h2>
+        <p>A cleaner and safer way to manage student attendance, document requests, and account access.</p>
+    </div>
+
+    <div class="grid">
+        <div class="feature-card reveal">
+            <div class="feature-icon"><i class="fa fa-qrcode"></i></div>
+            <h3>QR Attendance</h3>
+            <p>Students and parents can view attendance records and document request updates through their own secured portals.</p>
+        </div>
+
+        <div class="feature-card reveal">
+            <div class="feature-icon"><i class="fa fa-file-signature"></i></div>
+            <h3>Document Requests</h3>
+            <p>Students and parents can request school documents online and monitor the status of each request.</p>
+        </div>
+
+        <div class="feature-card reveal">
+            <div class="feature-icon"><i class="fa fa-fingerprint"></i></div>
+            <h3>Secure Access</h3>
+            <p>Role-based accounts, OTP verification, password protection, and secure access help protect student information.</p>
+        </div>
+    </div>
+</section>
+
+<section class="features alt">
+    <div class="section-header reveal">
+        <h2>Pitogo EduTrack Modules</h2>
+        <p>Focused modules for admin, students, parents, and staff.</p>
+    </div>
+
+    <div class="grid">
+        <div class="feature-card reveal">
+            <div class="feature-icon"><i class="fa fa-user-graduate"></i></div>
+            <h3>Student Portal</h3>
+            <p>Students can view their attendance, request documents, generate parent access codes, manage their profile, and update account settings.</p>
+        </div>
+
+        <div class="feature-card reveal">
+            <div class="feature-icon"><i class="fa fa-chalkboard-teacher"></i></div>
+            <h3>Staff QR Scanner</h3>
+            <p>Staff accounts are limited to the entrance QR scanner for quick and accurate student attendance marking.</p>
+        </div>
+
+        <div class="feature-card reveal">
+            <div class="feature-icon"><i class="fa fa-users"></i></div>
+            <h3>Parent Portal</h3>
+            <p>Parents can view their child’s attendance, submit or monitor document requests, and manage their account securely.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <h2>Start Using Pitogo EduTrack</h2>
+    <p>
+        Access your account and experience a more organized way of handling QR attendance, document requests, and student records.
+    </p>
+
+    <button class="nav-btn hero-main-btn" onclick="openLoginModal()">
+        Sign In Now <i class="fa fa-arrow-right"></i>
+    </button>
+</section>
+
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h2>
+                <img src="school-logo.jpg" alt="Pitogo High School Logo" class="footer-logo">
+                Pitogo High School
+            </h2>
+            <p>
+                Dedicated to nurturing excellence, innovation, and character.
+                Preparing learners for the challenges of tomorrow through quality education.
+            </p>
+        </div>
+
+        <div>
+            <h3 class="footer-heading">Portal Access</h3>
+            <ul class="footer-links">
+                <li><a href="#" onclick="openLoginModal()"><i class="fa fa-chevron-right"></i> Student Portal</a></li>
+                <li><a href="#" onclick="openLoginModal()"><i class="fa fa-chevron-right"></i> Staff Scanner</a></li>
+                <li><a href="#" onclick="openLoginModal()"><i class="fa fa-chevron-right"></i> Parent Portal</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h3 class="footer-heading">Contact Directory</h3>
+            <div class="contact-item">
+                <i class="fa fa-map-marker-alt"></i>
+                <div class="contact-text">
+                    <h4>Campus Address</h4>
+                    <p>Luzon St, Pitogo, Taguig,<br>1630 Metro Manila, Philippines</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <i class="fa fa-envelope"></i>
+                <div class="contact-text">
+                    <h4>School Email</h4>
+                    <p>pitogohighschool@example.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 Pitogo High School. All rights reserved.</p>
+        <div class="creator-tag" onclick="openTeamModal()">
+            System Architecture & Design by <span>The Development Team</span>
+        </div>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="authModal" onclick="closeOnOutsideClick(event, 'authModal')">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeLoginModal()"><i class="fa fa-times"></i></button>
+
+        <div class="modal-header">
+            <h2>Welcome Back</h2>
+            <p>Log in to access Pitogo EduTrack</p>
+        </div>
+
+        <div id="error-message"></div>
+        <div id="success-message"></div>
+
+        <form action="process_login.php" method="POST">
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" name="password" placeholder="Enter your password" required style="padding-right:40px;">
+                <i class="fa fa-eye toggle-password" onclick="togglePasswordVisibility('loginPassword', this)"></i>
+            </div>
+
+            <div class="forgot-password-link">
+                <a href="#" onclick="openForgotModal(); return false;">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width:100%; padding:14px; border-radius:8px;">Log In</button>
+
+            <p style="text-align:center; margin-top:20px; font-size:0.9rem; color:#64748B;">
+                Don't have an account?
+                <a href="register.html" style="color:var(--primary-blue); font-weight:700; text-decoration:none;">Create Account</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="forgotModal" onclick="closeOnOutsideClick(event, 'forgotModal')">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeForgotModal()"><i class="fa fa-times"></i></button>
+
+        <div class="modal-header">
+            <h2>Reset Password</h2>
+            <p id="forgotSubtitle">Securely reset your account access.</p>
+        </div>
+
+        <div id="forgot-error-message"></div>
+
+        <form id="forgotPasswordForm" action="process_reset.php" method="POST">
+            <div id="forgotStep1">
+                <div class="input-group">
+                    <label>Registered Email Address</label>
+                    <input type="email" id="resetEmail" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="input-group" style="background:#F0F4F8; padding:15px; border-radius:8px; border:1px dashed var(--primary-blue);">
+                    <label>Security Check: What is <span id="captchaQuestion" style="font-weight:800;"></span>?</label>
+                    <input type="number" id="captchaInput" placeholder="Enter answer">
+                </div>
+
+                <button type="button" class="btn-primary" onclick="verifyCaptchaAndProceed(event)" style="width:100%; padding:14px; border-radius:8px;">
+                    Verify & Send OTP
+                </button>
+            </div>
+
+            <div id="forgotStep2" style="display:none;">
+                <div style="background:#E6F0FA; color:var(--primary-blue); padding:10px; border-radius:8px; font-size:0.85rem; margin-bottom:15px; font-weight:700; text-align:center;">
+                    <i class="fa fa-envelope-open-text"></i> A 6-digit OTP has been sent to your email.
+                </div>
+
+                <div class="input-group">
+                    <label>Enter OTP Code</label>
+                    <input type="text" name="otp" placeholder="123456" maxlength="6" required>
+                </div>
+
+                <div class="input-group">
+                    <label>New Password</label>
+                    <input type="password" id="resetNewPass" name="new_password" placeholder="Create new password" required>
+                    <i class="fa fa-eye toggle-password" onclick="togglePasswordVisibility('resetNewPass', this)"></i>
+                </div>
+
+                <div class="input-group">
+                    <label>Confirm New Password</label>
+                    <input type="password" id="resetConfirmPass" name="confirm_new_password" placeholder="Confirm new password" required>
+                    <i class="fa fa-eye toggle-password" onclick="togglePasswordVisibility('resetConfirmPass', this)"></i>
+                </div>
+
+                <button type="submit" class="btn-primary" style="width:100%; padding:14px; border-radius:8px; background:#10B981;">
+                    <i class="fa fa-lock"></i> Reset Password
+                </button>
+            </div>
+
+            <div style="text-align:center; margin-top:20px;">
+                <a href="#" onclick="backToLogin(); return false;" style="color:var(--text-muted); font-size:0.9rem; font-weight:700; text-decoration:none;">
+                    <i class="fa fa-arrow-left"></i> Back to Login
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-overlay" id="teamModal" onclick="closeOnOutsideClick(event, 'teamModal')">
+    <div class="modal-box">
+        <button class="close-btn" onclick="closeTeamModal()"><i class="fa fa-times"></i></button>
+
+        <div class="modal-header">
+            <h2>The Development Team</h2>
+            <p>Meet the creators and architects behind the system.</p>
+        </div>
+
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-photo">
+                    <img src="member1.jpg" alt="Jullian Miguel Joquico" onerror="this.src='https://ui-avatars.com/api/?name=Jullian+Miguel+Joquico&background=0056B3&color=fff'">
+                </div>
+                <h3>Jullian Miguel Joquico</h3>
+                <p>Full Stack Developer</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-photo">
+                    <img src="Member2.jpg" alt="Denisse Margaret Ibanga" onerror="this.src='https://ui-avatars.com/api/?name=Denisse+Margaret+Ibanga&background=0056B3&color=fff'">
+                </div>
+                <h3>Denisse Margaret Ibanga</h3>
+                <p>UI/UX Designer</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-photo">
+                    <img src="Meme3.jpg" alt="Yoshke Grei Nasayao" onerror="this.src='https://ui-avatars.com/api/?name=Yoshke+Grei+Nasayao&background=0056B3&color=fff'">
+                </div>
+                <h3>Yoshke Grei Nasayao</h3>
+                <p>Quality Assurance</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+function togglePasswordVisibility(inputId, iconElement) {
+    const input = document.getElementById(inputId);
+
+    if (input.type === "password") {
+        input.type = "text";
+        iconElement.classList.remove("fa-eye");
+        iconElement.classList.add("fa-eye-slash");
+    } else {
+        input.type = "password";
+        iconElement.classList.remove("fa-eye-slash");
+        iconElement.classList.add("fa-eye");
+    }
+}
+
+let expectedCaptcha = 0;
+
+function generateCaptcha() {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    expectedCaptcha = num1 + num2;
+
+    document.getElementById('captchaQuestion').innerText = `${num1} + ${num2}`;
+    document.getElementById('captchaInput').value = '';
+}
+
+async function verifyCaptchaAndProceed(event) {
+    const emailInput = document.getElementById('resetEmail').value;
+    const userInput = parseInt(document.getElementById('captchaInput').value);
+
+    if (!emailInput) {
+        alert("Please enter your registered email address first.");
+        return;
+    }
+
+    if (userInput !== expectedCaptcha) {
+        alert("Incorrect security answer. Please try again.");
+        generateCaptcha();
+        return;
+    }
+
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+
+    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sending OTP...';
+    btn.disabled = true;
+
+    try {
+        const response = await fetch('process_send_otp.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'email=' + encodeURIComponent(emailInput)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+    document.getElementById('forgotStep1').style.display = 'none';
+    document.getElementById('forgotStep2').style.display = 'block';
+    document.getElementById('forgotSubtitle').innerText = "Enter your OTP and create a new password.";
+
+    document.getElementById('captchaInput').required = false;
+} else {
+            alert("Error: " + result.message);
+            generateCaptcha();
+        }
+    } catch (error) {
+        alert("A network error occurred. Please try again.");
+        generateCaptcha();
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
+
+const loginModal = document.getElementById('authModal');
+const forgotModal = document.getElementById('forgotModal');
+const teamModal = document.getElementById('teamModal');
+
+function openLoginModal() {
+    loginModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLoginModal() {
+    loginModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function openForgotModal() {
+    closeLoginModal();
+
+    const forgotErrorBox = document.getElementById('forgot-error-message');
+    forgotErrorBox.style.display = 'none';
+    forgotErrorBox.innerText = '';
+
+    document.getElementById('forgotStep1').style.display = 'block';
+    document.getElementById('forgotStep2').style.display = 'none';
+    document.getElementById('forgotSubtitle').innerText = "Securely reset your account access.";
+    generateCaptcha();
+    forgotModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeForgotModal() {
+    forgotModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function backToLogin() {
+    closeForgotModal();
+    openLoginModal();
+}
+
+function openTeamModal() {
+    teamModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeTeamModal() {
+    teamModal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function closeOnOutsideClick(e, modalId) {
+    const targetModal = document.getElementById(modalId);
+
+    if (e.target === targetModal) {
+        if (modalId === 'authModal') closeLoginModal();
+        if (modalId === 'forgotModal') closeForgotModal();
+        if (modalId === 'teamModal') closeTeamModal();
+    }
+}
+
+window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+
+    if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+    } else {
+        nav.classList.remove('scrolled');
+    }
+});
+
+function reveal() {
+    const reveals = document.querySelectorAll(".reveal");
+
+    for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveals[i].getBoundingClientRect().top;
+
+        if (elementTop < windowHeight - 100) {
+            reveals[i].classList.add("active");
+        }
+    }
+}
+
+window.addEventListener("scroll", reveal);
+reveal();
+
+function showLoginError(message) {
+    const errorBox = document.getElementById('error-message');
+    const successBox = document.getElementById('success-message');
+
+    successBox.style.display = 'none';
+    successBox.innerText = '';
+
+    errorBox.style.display = 'block';
+    errorBox.innerText = message;
+}
+
+function showLoginSuccess(message) {
+    const errorBox = document.getElementById('error-message');
+    const successBox = document.getElementById('success-message');
+
+    errorBox.style.display = 'none';
+    errorBox.innerText = '';
+
+    successBox.style.display = 'block';
+    successBox.innerText = message;
+}
+
+function showForgotError(message) {
+    const forgotErrorBox = document.getElementById('forgot-error-message');
+
+    forgotErrorBox.style.display = 'block';
+    forgotErrorBox.innerText = message;
+}
+
+window.onload = function () {
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const error = urlParams.get('error');
+    const success = urlParams.get('success');
+    const email = urlParams.get('email');
+    const forgot = urlParams.get('forgot');
+
+    const emailInput = document.getElementById('loginEmail');
+    const passwordInput = document.getElementById('loginPassword');
+    const resetEmailInput = document.getElementById('resetEmail');
+
+    if (success) {
+        openLoginModal();
+        showLoginSuccess(success);
+
+        emailInput.value = '';
+        passwordInput.value = '';
+
+        window.history.replaceState({}, document.title, window.location.pathname);
+        return;
+    }
+
+    if (forgot === '1' && error) {
+
+        document.getElementById('captchaInput').required = false;
+        closeLoginModal();
+
+        document.getElementById('forgotStep1').style.display = 'none';
+        document.getElementById('forgotStep2').style.display = 'block';
+        document.getElementById('forgotSubtitle').innerText = "Enter your OTP and create a new password.";
+
+        if (email) {
+            resetEmailInput.value = email;
+        }
+
+        forgotModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        showForgotError(error);
+
+        window.history.replaceState({}, document.title, window.location.pathname);
+        return;
+    }
+
+    if (error) {
+        openLoginModal();
+
+        if (error === 'wrong_password') {
+            showLoginError("Incorrect password. Please try again.");
+
+            if (email) {
+                emailInput.value = email;
+            }
+
+            passwordInput.value = '';
+        }
+
+        else if (error === 'no_account') {
+            showLoginError("No account found with that email.");
+
+            emailInput.value = '';
+            passwordInput.value = '';
+        }
+
+        else {
+            showLoginError(error);
+        }
+
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+};
+</script>
+
+</body>
+</html>

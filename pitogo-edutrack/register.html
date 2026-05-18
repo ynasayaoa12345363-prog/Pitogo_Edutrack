@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register | Pitogo EduTrack</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root{
+    --primary-navy:#0B1C3D;
+    --primary-blue:#0056B3;
+    --bg-main:#F4F7F9;
+    --surface-white:#FFFFFF;
+    --text-dark:#1E293B;
+    --text-muted:#64748B;
+    --border-color:#E2E8F0;
+    --success:#10B981;
+    --warning:#F59E0B;
+    --danger:#EF4444;
+    --transition:all .3s ease;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    background:var(--bg-main);
+    display:flex;
+    overflow-y:auto;
+    overflow-x:hidden;
+}
+
+h1,h2,h3{
+    font-family:'Montserrat',sans-serif;
+}
+
+.left-side{
+    flex:1;
+    background:
+        linear-gradient(rgba(11,28,61,.88),rgba(11,28,61,.93)),
+        url('school-bg.jpg');
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:50px;
+    position:relative;
+    overflow:hidden;
+}
+
+.left-side::after{
+    content:'';
+    position:absolute;
+    width:350px;
+    height:350px;
+    border-radius:50%;
+    background:rgba(255,255,255,.05);
+    bottom:-100px;
+    left:-100px;
+}
+
+.brand-container{
+    position:relative;
+    z-index:2;
+    max-width:500px;
+    text-align:center;
+    color:white;
+}
+
+.school-logo{
+    width:140px;
+    height:140px;
+    background:white;
+    border-radius:50%;
+    margin:0 auto 30px;
+    padding:12px;
+    border:5px solid rgba(255,255,255,.25);
+    box-shadow:0 25px 50px rgba(0,0,0,.25);
+}
+
+.school-logo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.brand-container h1{
+    font-size:3rem;
+    line-height:1.1;
+    margin-bottom:20px;
+    font-weight:800;
+}
+
+.brand-container p{
+    color:rgba(255,255,255,.85);
+    line-height:1.7;
+    font-size:1rem;
+}
+
+.portal-badge{
+    margin-top:30px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.18);
+    padding:12px 18px;
+    border-radius:999px;
+    font-size:.85rem;
+    font-weight:700;
+    backdrop-filter:blur(10px);
+}
+
+.right-side{
+    flex:1;
+    background:white;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    padding:40px;
+    overflow-y:auto;
+    min-height:100vh;
+}
+
+.form-wrapper{
+    width:100%;
+    max-width:620px;
+    padding-bottom:50px;
+}
+
+.mobile-logo{
+    display:none;
+    width:90px;
+    height:90px;
+    background:white;
+    border-radius:50%;
+    padding:8px;
+    margin:0 auto 20px;
+    border:1px solid var(--border-color);
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.mobile-logo img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.form-wrapper h2{
+    font-size:2rem;
+    color:var(--primary-navy);
+    margin-bottom:8px;
+}
+
+.subtitle{
+    color:var(--text-muted);
+    margin-bottom:30px;
+    line-height:1.6;
+}
+
+.role-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.role-card{
+    background:white;
+    border:2px solid var(--border-color);
+    border-radius:20px;
+    padding:35px 20px;
+    text-align:center;
+    cursor:pointer;
+    transition:var(--transition);
+    box-shadow:0 10px 20px rgba(0,0,0,.03);
+}
+
+.role-card:hover{
+    transform:translateY(-8px);
+    border-color:var(--primary-blue);
+    box-shadow:0 20px 35px rgba(0,86,179,.12);
+}
+
+.role-card i{
+    font-size:2.8rem;
+    color:var(--primary-blue);
+    margin-bottom:16px;
+}
+
+.role-card h3{
+    font-size:1rem;
+    color:var(--primary-navy);
+    font-weight:800;
+}
+
+#formView{
+    display:none;
+}
+
+.back-btn{
+    border:none;
+    background:none;
+    color:var(--text-muted);
+    font-weight:700;
+    margin-bottom:20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:.95rem;
+}
+
+.back-btn:hover{
+    color:var(--primary-blue);
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.full-width{
+    grid-column:span 2;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:7px;
+    font-size:.82rem;
+    font-weight:800;
+    color:var(--primary-navy);
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+    padding:13px 14px;
+    border-radius:10px;
+    border:1px solid var(--border-color);
+    background:#F8FAFC;
+    font-size:.95rem;
+    outline:none;
+    transition:var(--transition);
+    font-family:'Inter',sans-serif;
+}
+
+.input-group input:focus,
+.input-group select:focus{
+    border-color:var(--primary-blue);
+    background:white;
+    box-shadow:0 0 0 3px rgba(0,86,179,.1);
+}
+
+.helper-text{
+    font-size:.75rem;
+    color:var(--text-muted);
+    margin-top:6px;
+    line-height:1.4;
+}
+
+.password-wrapper{
+    position:relative;
+}
+
+.password-wrapper input{
+    padding-right:42px;
+}
+
+.toggle-password{
+    position:absolute;
+    top:39px;
+    right:15px;
+    color:var(--text-muted);
+    cursor:pointer;
+}
+
+.password-strength{
+    margin-top:10px;
+}
+
+.strength-bar-bg{
+    height:7px;
+    border-radius:999px;
+    background:#E2E8F0;
+    overflow:hidden;
+}
+
+.strength-bar{
+    height:100%;
+    width:0%;
+    transition:var(--transition);
+}
+
+.strength-text{
+    margin-top:6px;
+    font-size:.8rem;
+    font-weight:700;
+    text-align:right;
+}
+
+.password-checks{
+    margin-top:10px;
+    list-style:none;
+    font-size:.8rem;
+}
+
+.password-checks li{
+    margin-bottom:5px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#94A3B8;
+}
+
+.password-checks li.valid{
+    color:var(--success);
+}
+
+.match-status{
+    margin-top:7px;
+    font-size:.8rem;
+    font-weight:800;
+    min-height:18px;
+}
+
+.terms{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    font-size:.85rem;
+    color:var(--text-muted);
+    line-height:1.5;
+    margin-top:10px;
+}
+
+.terms input{
+    margin-top:3px;
+}
+
+.terms a{
+    color:var(--primary-blue);
+    font-weight:700;
+    text-decoration:none;
+}
+
+.submit-btn{
+    width:100%;
+    margin-top:25px;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:var(--primary-navy);
+    color:white;
+    font-weight:800;
+    font-size:1rem;
+    cursor:pointer;
+    transition:var(--transition);
+    font-family:'Montserrat',sans-serif;
+}
+
+.submit-btn:hover:not(:disabled){
+    background:var(--primary-blue);
+    transform:translateY(-2px);
+    box-shadow:0 15px 25px rgba(0,86,179,.2);
+}
+
+.submit-btn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+}
+
+.login-link{
+    margin-top:22px;
+    text-align:center;
+    color:var(--text-muted);
+    font-size:.9rem;
+}
+
+.login-link a{
+    color:var(--primary-blue);
+    font-weight:800;
+    text-decoration:none;
+}
+
+@media(max-width:900px){
+    body{
+        display:block;
+        overflow-y:auto;
+    }
+
+    .left-side{
+        display:none;
+    }
+
+    .right-side{
+        min-height:100vh;
+        padding:30px 22px;
+    }
+
+    .mobile-logo{
+        display:block;
+    }
+
+    .role-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full-width{
+        grid-column:span 1;
+    }
+
+    .form-wrapper h2,
+    .subtitle{
+        text-align:center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="left-side">
+    <div class="brand-container">
+        <div class="school-logo">
+            <img src="school-logo.jpg" alt="Pitogo High School Logo">
+        </div>
+
+        <h1>Join Pitogo EduTrack</h1>
+
+        <p>
+            Create your account to access QR attendance, document requests,
+            parent monitoring, and secure digital school services of Pitogo High School.
+        </p>
+
+        <div class="portal-badge">
+            <i class="fa fa-shield-alt"></i>
+            Secure Student Records and QR Attendance System
+        </div>
+    </div>
+</div>
+
+<div class="right-side">
+    <div class="form-wrapper">
+
+        <div class="mobile-logo">
+            <img src="school-logo.jpg" alt="Pitogo High School Logo">
+        </div>
+
+        <div id="roleView">
+            <h2>Select Account Type</h2>
+            <p class="subtitle">Choose the type of account you want to register.</p>
+
+            <div class="role-grid">
+                <div class="role-card" onclick="openForm('student')">
+                    <i class="fa fa-user-graduate"></i>
+                    <h3>Student</h3>
+                </div>
+
+                <div class="role-card" onclick="openForm('staff')">
+                    <i class="fa fa-qrcode"></i>
+                    <h3>Staff / QR Scanner</h3>
+                </div>
+
+                <div class="role-card" onclick="openForm('parent')">
+                    <i class="fa fa-users"></i>
+                    <h3>Parent / Guardian</h3>
+                </div>
+
+                <div class="role-card" onclick="openForm('admin')">
+                    <i class="fa fa-user-shield"></i>
+                    <h3>Administrator</h3>
+                </div>
+            </div>
+
+            <div class="login-link">
+                Already have an account?
+                <a href="index.html">Login Here</a>
+            </div>
+        </div>
+
+        <div id="formView">
+            <button class="back-btn" type="button" onclick="goBack()">
+                <i class="fa fa-arrow-left"></i>
+                Back
+            </button>
+
+            <h2 id="formTitle">Create Account</h2>
+            <p class="subtitle" id="formSubtitle">Fill out the required details below.</p>
+
+            <form action="process_register.php" method="POST" id="registerForm">
+                <input type="hidden" name="role" id="selectedRole">
+                <input type="hidden" name="id_num" id="finalIdNum">
+
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>First Name</label>
+                        <input type="text" name="first_name" id="firstName" required autocomplete="given-name" placeholder="Enter first name">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" id="lastName" required autocomplete="family-name" placeholder="Enter last name">
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label>Middle Name <span style="color:#64748B;font-weight:600;">(Optional)</span></label>
+                        <input type="text" name="middle_name" id="middleName" autocomplete="additional-name" placeholder="Enter middle name if applicable">
+                    </div>
+
+                    <div class="input-group full-width role-field" id="studentLrnField">
+                        <label>LRN</label>
+                        <input type="text" name="student_lrn" id="studentLrn" maxlength="12" inputmode="numeric" placeholder="Enter 12-digit LRN">
+                        <div class="helper-text">Required for student accounts only.</div>
+                    </div>
+
+                    <div class="input-group full-width role-field" id="staffNumberField">
+                        <label>Staff ID Number</label>
+                        <input type="text" name="staff_number" id="staffNumber" placeholder="Enter staff ID number">
+                        <div class="helper-text">Required for staff accounts. Staff accounts only access the QR scanner.</div>
+                    </div>
+
+                    <div class="input-group full-width role-field" id="staffCodeField">
+                        <label>Staff Access Code</label>
+                        <input type="text" name="staff_code" id="staffCode" placeholder="Enter code generated by the super admin" style="text-transform:uppercase; letter-spacing:2px; font-weight:800; text-align:center;">
+                        <div class="helper-text">Required for staff accounts. This code must be generated in Admin Settings by the super admin.</div>
+                    </div>
+
+                    <div class="input-group full-width role-field" id="parentAccessField">
+                        <label>Parent Access Code</label>
+                        <input type="text" name="parent_access_code" id="parentAccessCode" placeholder="Enter code from the student account" style="text-transform:uppercase; letter-spacing:2px; font-weight:800; text-align:center;">
+                        <div class="helper-text">Required for parent accounts. This code must come from the student's account.</div>
+                    </div>
+
+                    <div class="input-group full-width role-field" id="adminCodeField">
+                        <label>Admin Code</label>
+                        <input type="text" name="admin_code" id="adminCode" placeholder="Enter code generated by the super admin" style="text-transform:uppercase; letter-spacing:2px; font-weight:800; text-align:center;">
+                        <div class="helper-text">Required for admin accounts. This code must be generated by the super admin.</div>
+                    </div>
+
+                    <div class="input-group full-width">
+                        <label>Email Address</label>
+                        <input type="email" name="email" id="email" required autocomplete="email" placeholder="Enter email address">
+                    </div>
+
+                    <div class="input-group full-width password-wrapper">
+                        <label>Password</label>
+                        <input type="password" id="password" name="password" required autocomplete="new-password" placeholder="Create password">
+                        <i class="fa fa-eye toggle-password" onclick="togglePassword('password', this)"></i>
+
+                        <div class="password-strength">
+                            <div class="strength-bar-bg">
+                                <div class="strength-bar" id="strengthBar"></div>
+                            </div>
+                            <div class="strength-text" id="strengthText">Password Strength</div>
+                        </div>
+
+                        <ul class="password-checks">
+                            <li id="check-length"><i class="fa fa-circle"></i> Minimum 8 characters</li>
+                            <li id="check-upper"><i class="fa fa-circle"></i> Uppercase letter</li>
+                            <li id="check-lower"><i class="fa fa-circle"></i> Lowercase letter</li>
+                            <li id="check-number"><i class="fa fa-circle"></i> Number</li>
+                            <li id="check-special"><i class="fa fa-circle"></i> Special character</li>
+                        </ul>
+                    </div>
+
+                    <div class="input-group full-width password-wrapper">
+                        <label>Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirm_password" required autocomplete="new-password" placeholder="Confirm password">
+                        <i class="fa fa-eye toggle-password" onclick="togglePassword('confirmPassword', this)"></i>
+                        <div class="match-status" id="matchStatus"></div>
+                    </div>
+
+                    <div class="full-width terms">
+                        <input type="checkbox" id="infoCorrectCheck" name="information_correct" value="1" required>
+                        <span>
+                            I confirm that all information provided is correct and truthful.
+                        </span>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn" disabled>
+                    Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+const roleConfig = {
+    student: {
+        title: 'Student Registration',
+        subtitle: 'Enter your personal information and your LRN.',
+        show: ['studentLrnField'],
+        require: ['studentLrn']
+    },
+    staff: {
+        title: 'Staff Registration',
+        subtitle: 'Enter your personal information, staff ID number, and staff access code. Staff accounts are for QR attendance scanning only.',
+        show: ['staffNumberField', 'staffCodeField'],
+        require: ['staffNumber', 'staffCode']
+    },
+    parent: {
+        title: 'Parent / Guardian Registration',
+        subtitle: 'Enter your information and the parent access code from the student account.',
+        show: ['parentAccessField'],
+        require: ['parentAccessCode']
+    },
+    admin: {
+        title: 'Administrator Registration',
+        subtitle: 'Enter your information and the admin code generated by the super admin.',
+        show: ['adminCodeField'],
+        require: ['adminCode']
+    }
+};
+
+const roleView = document.getElementById('roleView');
+const formView = document.getElementById('formView');
+const selectedRoleInput = document.getElementById('selectedRole');
+const formTitle = document.getElementById('formTitle');
+const formSubtitle = document.getElementById('formSubtitle');
+
+const passwordInput = document.getElementById('password');
+const confirmPasswordInput = document.getElementById('confirmPassword');
+const submitBtn = document.getElementById('submitBtn');
+const matchStatus = document.getElementById('matchStatus');
+
+const requiredByRoleIds = [
+    'studentLrn',
+    'staffNumber',
+    'staffCode',
+    'parentAccessCode',
+    'adminCode'
+];
+
+function openForm(role){
+    selectedRoleInput.value = role;
+
+    const config = roleConfig[role];
+    formTitle.innerText = config.title;
+    formSubtitle.innerText = config.subtitle;
+
+    document.querySelectorAll('.role-field').forEach(field => {
+        field.style.display = 'none';
+    });
+
+    requiredByRoleIds.forEach(id => {
+        const input = document.getElementById(id);
+        if(input){
+            input.required = false;
+            input.value = '';
+        }
+    });
+
+    config.show.forEach(fieldId => {
+        document.getElementById(fieldId).style.display = 'block';
+    });
+
+    config.require.forEach(inputId => {
+        document.getElementById(inputId).required = true;
+    });
+
+    roleView.style.display = 'none';
+    formView.style.display = 'block';
+
+    validateForm();
+}
+
+function goBack(){
+    formView.style.display = 'none';
+    roleView.style.display = 'block';
+    document.getElementById('registerForm').reset();
+    selectedRoleInput.value = '';
+    resetPasswordUI();
+
+    document.querySelectorAll('.role-field').forEach(field => {
+        field.style.display = 'none';
+    });
+}
+
+function togglePassword(inputId, icon){
+    const input = document.getElementById(inputId);
+
+    if(input.type === 'password'){
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    }else{
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+function updateCheck(id, valid){
+    const li = document.getElementById(id);
+    const icon = li.querySelector('i');
+
+    if(valid){
+        li.classList.add('valid');
+        icon.className = 'fa fa-check-circle';
+    }else{
+        li.classList.remove('valid');
+        icon.className = 'fa fa-circle';
+    }
+}
+
+function getPasswordChecks(value){
+    return {
+        length: value.length >= 8,
+        upper: /[A-Z]/.test(value),
+        lower: /[a-z]/.test(value),
+        number: /[0-9]/.test(value),
+        special: /[^A-Za-z0-9]/.test(value)
+    };
+}
+
+function validatePassword(){
+    const value = passwordInput.value;
+    const checks = getPasswordChecks(value);
+
+    updateCheck('check-length', checks.length);
+    updateCheck('check-upper', checks.upper);
+    updateCheck('check-lower', checks.lower);
+    updateCheck('check-number', checks.number);
+    updateCheck('check-special', checks.special);
+
+    let strength = 0;
+    Object.values(checks).forEach(valid => {
+        if(valid) strength++;
+    });
+
+    const bar = document.getElementById('strengthBar');
+    const text = document.getElementById('strengthText');
+
+    bar.style.width = (strength * 20) + '%';
+
+    if(value.length === 0){
+        bar.style.width = '0%';
+        bar.style.background = '#E2E8F0';
+        text.innerText = 'Password Strength';
+        text.style.color = '#64748B';
+    }else if(strength <= 2){
+        bar.style.background = '#EF4444';
+        text.innerText = 'Weak Password';
+        text.style.color = '#EF4444';
+    }else if(strength <= 4){
+        bar.style.background = '#F59E0B';
+        text.innerText = 'Medium Password';
+        text.style.color = '#F59E0B';
+    }else{
+        bar.style.background = '#10B981';
+        text.innerText = 'Strong Password';
+        text.style.color = '#10B981';
+    }
+
+    validatePasswordMatch();
+    validateForm();
+
+    return Object.values(checks).every(Boolean);
+}
+
+function validatePasswordMatch(){
+    const pass = passwordInput.value;
+    const confirm = confirmPasswordInput.value;
+
+    if(confirm.length === 0){
+        matchStatus.innerHTML = '';
+        return false;
+    }
+
+    if(pass === confirm){
+        matchStatus.style.color = '#10B981';
+        matchStatus.innerHTML = '<i class="fa fa-check-circle"></i> Passwords match';
+        return true;
+    }
+
+    matchStatus.style.color = '#EF4444';
+    matchStatus.innerHTML = '<i class="fa fa-times-circle"></i> Passwords do not match';
+    return false;
+}
+
+function validateRoleFields(){
+    const role = selectedRoleInput.value;
+
+    if(!role || !roleConfig[role]){
+        return false;
+    }
+
+    let valid = true;
+
+    roleConfig[role].require.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if(!input || input.value.trim() === ''){
+            valid = false;
+        }
+    });
+
+    if(role === 'student'){
+        const studentLrn = document.getElementById('studentLrn').value.trim();
+        if(!/^[0-9]{12}$/.test(studentLrn)){
+            valid = false;
+        }
+    }
+
+    if(role === 'staff'){
+        const staffNumber = document.getElementById('staffNumber').value.trim();
+        const staffCode = document.getElementById('staffCode').value.trim();
+
+        if(staffNumber.length < 3 || staffCode.length < 6){
+            valid = false;
+        }
+    }
+
+    return valid;
+}
+
+function validateForm(){
+    const requiredInputs = document.querySelectorAll('#registerForm input[required]');
+    let baseValid = true;
+
+    requiredInputs.forEach(input => {
+        if(input.offsetParent !== null && input.value.trim() === ''){
+            baseValid = false;
+        }
+
+        if(input.type === 'checkbox' && !input.checked){
+            baseValid = false;
+        }
+    });
+
+    const passwordStrong = Object.values(getPasswordChecks(passwordInput.value)).every(Boolean);
+    const passwordMatch = passwordInput.value === confirmPasswordInput.value && confirmPasswordInput.value.length > 0;
+    const roleFieldsValid = validateRoleFields();
+    const infoConfirmed = document.getElementById('infoCorrectCheck').checked;
+
+    submitBtn.disabled = !(baseValid && passwordStrong && passwordMatch && roleFieldsValid && infoConfirmed);
+}
+
+function resetPasswordUI(){
+    document.getElementById('strengthBar').style.width = '0%';
+    document.getElementById('strengthText').innerText = 'Password Strength';
+    document.getElementById('strengthText').style.color = '#64748B';
+    matchStatus.innerHTML = '';
+
+    ['check-length','check-upper','check-lower','check-number','check-special'].forEach(id => {
+        updateCheck(id, false);
+    });
+
+    submitBtn.disabled = true;
+}
+
+passwordInput.addEventListener('input', validatePassword);
+confirmPasswordInput.addEventListener('input', function(){
+    validatePasswordMatch();
+    validateForm();
+});
+
+document.querySelectorAll('#registerForm input, #registerForm select').forEach(input => {
+    input.addEventListener('input', validateForm);
+    input.addEventListener('change', validateForm);
+});
+
+document.getElementById('studentLrn').addEventListener('input', function(){
+    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 12);
+});
+
+['parentAccessCode', 'adminCode', 'staffCode'].forEach(id => {
+    document.getElementById(id).addEventListener('input', function(){
+        this.value = this.value.toUpperCase().replace(/\s/g, '');
+    });
+});
+
+document.getElementById('registerForm').addEventListener('submit', function(e){
+    if(submitBtn.disabled){
+        e.preventDefault();
+        alert('Please complete all required fields, confirm the information checkbox, and make sure the password is strong and matched.');
+        return;
+    }
+
+    if(selectedRoleInput.value === 'student'){
+        document.getElementById('finalIdNum').value = document.getElementById('studentLrn').value.trim();
+    } else if(selectedRoleInput.value === 'staff'){
+        document.getElementById('finalIdNum').value = document.getElementById('staffNumber').value.trim();
+    } else {
+        document.getElementById('finalIdNum').value = '';
+    }
+
+    if(selectedRoleInput.value === 'student'){
+        const studentLrn = document.getElementById('studentLrn').value.trim();
+        if(!/^[0-9]{12}$/.test(studentLrn)){
+            e.preventDefault();
+            alert('Student LRN must be exactly 12 digits.');
+            return;
+        }
+    }
+
+    if(selectedRoleInput.value === 'staff'){
+        const staffNumber = document.getElementById('staffNumber').value.trim();
+        const staffCode = document.getElementById('staffCode').value.trim();
+
+        if(staffNumber.length < 3){
+            e.preventDefault();
+            alert('Please enter a valid staff ID number.');
+            return;
+        }
+
+        if(staffCode.length < 6){
+            e.preventDefault();
+            alert('Please enter the staff access code generated by the super admin.');
+            return;
+        }
+    }
+
+    if(passwordInput.value !== confirmPasswordInput.value){
+        e.preventDefault();
+        alert('Passwords do not match.');
+        return;
+    }
+
+    if(!document.getElementById('infoCorrectCheck').checked){
+        e.preventDefault();
+        alert('Please confirm that all information provided is correct.');
+    }
+});
+</script>
+
+</body>
+</html>
