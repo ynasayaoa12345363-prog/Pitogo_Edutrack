@@ -1,25 +1,32 @@
 <?php
-$host = "localhost";
-$username = "root";
-$password = "";
-$database = "pitogo_edutrack";
+$host = getenv("MYSQLHOST") ?: "localhost";
+$username = getenv("MYSQLUSER") ?: "root";
+$password = getenv("MYSQLPASSWORD") ?: "";
+$database = getenv("MYSQLDATABASE") ?: "pitogo_edutrack";
+$port = getenv("MYSQLPORT") ?: "3306";
 
 try {
     $pdo = new PDO(
-        "mysql:host=$host;dbname=$database;charset=utf8mb4",
+        "mysql:host=$host;port=$port;dbname=$database;charset=utf8mb4",
         $username,
-        $password
+        $password,
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES => false
+        ]
     );
-
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     $isAjax =
         !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
-    if ($isAjax || str_contains($_SERVER['REQUEST_URI'] ?? '', 'process_') || str_contains($_SERVER['REQUEST_URI'] ?? '', 'process-')) {
+    if (
+        $isAjax ||
+        str_contains($_SERVER['REQUEST_URI'] ?? '', 'process_') ||
+        str_contains($_SERVER['REQUEST_URI'] ?? '', 'process-')
+    ) {
         http_response_code(500);
         header('Content-Type: application/json; charset=utf-8');
 
