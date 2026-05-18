@@ -1,9 +1,9 @@
 <?php
-$host = getenv("MYSQLHOST") ?: "localhost";
+$host = getenv("MYSQLHOST") ?: "centerbeam.proxy.rlwy.net";
 $username = getenv("MYSQLUSER") ?: "root";
 $password = getenv("MYSQLPASSWORD") ?: "";
-$database = getenv("MYSQLDATABASE") ?: "pitogo_edutrack";
-$port = getenv("MYSQLPORT") ?: "3306";
+$database = getenv("MYSQLDATABASE") ?: "railway";
+$port = getenv("MYSQLPORT") ?: "21257";
 
 try {
     $pdo = new PDO(
@@ -18,6 +18,7 @@ try {
     );
 
 } catch (PDOException $e) {
+
     $isAjax =
         !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
         strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
@@ -27,15 +28,21 @@ try {
         str_contains($_SERVER['REQUEST_URI'] ?? '', 'process_') ||
         str_contains($_SERVER['REQUEST_URI'] ?? '', 'process-')
     ) {
+
         http_response_code(500);
+
         header('Content-Type: application/json; charset=utf-8');
 
         echo json_encode([
             'status' => 'error',
-            'message' => 'Database connection failed. Please check MySQL and database settings.'
+            'message' => 'Database connection failed.',
+            'error' => $e->getMessage()
         ], JSON_UNESCAPED_UNICODE);
+
     } else {
+
         die("Database Connection Failed: " . $e->getMessage());
+
     }
 
     exit();
