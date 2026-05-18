@@ -9,7 +9,9 @@ if ($mysqlUrl) {
     $port = $url["port"] ?? "3306";
     $username = $url["user"] ?? "";
     $password = $url["pass"] ?? "";
-    $database = isset($url["path"]) ? ltrim($url["path"], "/") : "";
+
+    // FORCE YOUR ACTUAL DATABASE NAME
+    $database = "a264133_fu8h5bcm";
 
 } else {
 
