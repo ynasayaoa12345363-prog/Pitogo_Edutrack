@@ -187,6 +187,7 @@ function getRequesterInfo(PDO $pdo, int $requestId): array {
 }
 
 function sendDocumentOtpEmail(string $recipientEmail, string $recipientName, string $documentType, string $trackingId, string $otp): bool {
+
     if ($recipientEmail === '' || !filter_var($recipientEmail, FILTER_VALIDATE_EMAIL)) {
         return false;
     }
@@ -194,72 +195,202 @@ function sendDocumentOtpEmail(string $recipientEmail, string $recipientName, str
     $mail = new PHPMailer(true);
 
     try {
+
         $mail->isSMTP();
-        $mail->Host = 'smtp.gmail.com';
+
+        /*
+        |--------------------------------------------------------------------------
+        | BREVO SMTP SETTINGS
+        |--------------------------------------------------------------------------
+        */
+
+        $mail->Host = 'smtp-relay.brevo.com';
+
         $mail->SMTPAuth = true;
 
         /*
         |--------------------------------------------------------------------------
-        | IMPORTANT:
-        | Replace these with your Gmail address and Gmail App Password if needed.
+        | YOUR VERIFIED BREVO EMAIL
         |--------------------------------------------------------------------------
         */
+
         $mail->Username = 'margeauxcosmetics16@gmail.com';
-        $mail->Password = 'piagntijndkisiko';
+
+        /*
+        |--------------------------------------------------------------------------
+        | YOUR BREVO SMTP KEY
+        |--------------------------------------------------------------------------
+        */
+
+        $mail->Password = 'xsmtpsib-fc2697de645fd2b577bb01628bc6041ef583a23b153f0a64a90d0f2269b30fc3-SGpPylV7Pdcq6xcy';
 
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+
         $mail->Port = 587;
 
-        $mail->setFrom('margeauxcosmetics16@gmail.com', 'Pitogo EduTrack');
-        $mail->addAddress($recipientEmail, $recipientName ?: 'Requester');
+        /*
+        |--------------------------------------------------------------------------
+        | OPTIONAL FIXES FOR RAILWAY
+        |--------------------------------------------------------------------------
+        */
+
+        $mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            ]
+        ];
+
+        $mail->Timeout = 60;
+
+        /*
+        |--------------------------------------------------------------------------
+        | EMAIL DETAILS
+        |--------------------------------------------------------------------------
+        */
+
+        $mail->setFrom(
+            'margeauxcosmetics16@gmail.com',
+            'Pitogo EduTrack'
+        );
+
+        $mail->addAddress(
+            $recipientEmail,
+            $recipientName ?: 'Requester'
+        );
 
         $mail->isHTML(true);
-        $mail->Subject = 'Pitogo EduTrack Document Access OTP';
 
-        $safeName = htmlspecialchars($recipientName ?: 'Requester', ENT_QUOTES, 'UTF-8');
-        $safeDoc = htmlspecialchars($documentType ?: 'Requested Document', ENT_QUOTES, 'UTF-8');
-        $safeTracking = htmlspecialchars($trackingId ?: 'N/A', ENT_QUOTES, 'UTF-8');
-        $safeOtp = htmlspecialchars($otp, ENT_QUOTES, 'UTF-8');
+        $mail->Subject =
+            'Pitogo EduTrack Document Access OTP';
+
+        $safeName = htmlspecialchars(
+            $recipientName ?: 'Requester',
+            ENT_QUOTES,
+            'UTF-8'
+        );
+
+        $safeDoc = htmlspecialchars(
+            $documentType ?: 'Requested Document',
+            ENT_QUOTES,
+            'UTF-8'
+        );
+
+        $safeTracking = htmlspecialchars(
+            $trackingId ?: 'N/A',
+            ENT_QUOTES,
+            'UTF-8'
+        );
+
+        $safeOtp = htmlspecialchars(
+            $otp,
+            ENT_QUOTES,
+            'UTF-8'
+        );
 
         $mail->Body = "
             <div style='font-family:Arial,sans-serif;background:#f4f7fb;padding:25px;'>
-                <div style='max-width:560px;margin:auto;background:#ffffff;border-radius:14px;padding:30px;border:1px solid #e5e7eb;'>
-                    <h2 style='color:#0B1C3D;margin-top:0;'>Pitogo EduTrack Document Access</h2>
 
-                    <p style='color:#334155;font-size:15px;'>Hello <b>{$safeName}</b>,</p>
+                <div style='max-width:560px;
+                            margin:auto;
+                            background:#ffffff;
+                            border-radius:14px;
+                            padding:30px;
+                            border:1px solid #e5e7eb;'>
 
-                    <p style='color:#334155;font-size:15px;line-height:1.6;'>
-                        Your requested soft copy document has been released and is now ready for secure access.
+                    <h2 style='color:#0B1C3D;margin-top:0;'>
+                        Pitogo EduTrack Document Access
+                    </h2>
+
+                    <p style='color:#334155;font-size:15px;'>
+                        Hello <b>{$safeName}</b>,
                     </p>
 
-                    <div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin:18px 0;'>
-                        <p style='margin:0 0 8px;color:#334155;'><b>Document:</b> {$safeDoc}</p>
-                        <p style='margin:0;color:#334155;'><b>Tracking ID:</b> {$safeTracking}</p>
+                    <p style='color:#334155;
+                              font-size:15px;
+                              line-height:1.6;'>
+
+                        Your requested soft copy document
+                        has been released and is now ready
+                        for secure access.
+
+                    </p>
+
+                    <div style='background:#f8fafc;
+                                border:1px solid #e2e8f0;
+                                border-radius:12px;
+                                padding:16px;
+                                margin:18px 0;'>
+
+                        <p style='margin:0 0 8px;color:#334155;'>
+
+                            <b>Document:</b> {$safeDoc}
+
+                        </p>
+
+                        <p style='margin:0;color:#334155;'>
+
+                            <b>Tracking ID:</b> {$safeTracking}
+
+                        </p>
+
                     </div>
 
-                    <p style='color:#334155;font-size:15px;line-height:1.6;'>
-                        Use the OTP below to open or download your soft copy document:
+                    <p style='color:#334155;
+                              font-size:15px;
+                              line-height:1.6;'>
+
+                        Use the OTP below to open or
+                        download your soft copy document:
+
                     </p>
 
-                    <div style='text-align:center;margin:26px 0;'>
-                        <span style='display:inline-block;background:#0B1C3D;color:#ffffff;font-size:30px;letter-spacing:6px;padding:14px 26px;border-radius:10px;font-weight:bold;'>
+                    <div style='text-align:center;
+                                margin:26px 0;'>
+
+                        <span style='display:inline-block;
+                                     background:#0B1C3D;
+                                     color:#ffffff;
+                                     font-size:30px;
+                                     letter-spacing:6px;
+                                     padding:14px 26px;
+                                     border-radius:10px;
+                                     font-weight:bold;'>
+
                             {$safeOtp}
+
                         </span>
+
                     </div>
 
-                    <p style='color:#64748b;font-size:13px;line-height:1.6;'>
-                        This OTP is for document access only. Do not share it with anyone.
+                    <p style='color:#64748b;
+                              font-size:13px;
+                              line-height:1.6;'>
+
+                        This OTP is for document access only.
+                        Do not share it with anyone.
+
                     </p>
+
                 </div>
+
             </div>
         ";
 
-        $mail->AltBody = "Your Pitogo EduTrack document access OTP is: {$otp}";
+        $mail->AltBody =
+            "Your Pitogo EduTrack document access OTP is: {$otp}";
 
         $mail->send();
+
         return true;
 
     } catch (Exception $e) {
+
+        error_log(
+            'BREVO MAIL ERROR: ' . $mail->ErrorInfo
+        );
+
         return false;
     }
 }
