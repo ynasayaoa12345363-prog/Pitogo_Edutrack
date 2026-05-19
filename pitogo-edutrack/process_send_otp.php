@@ -170,34 +170,52 @@ try {
 
         $mail->isSMTP();
 
-        $mail->Host = 'smtp.gmail.com';
+/*
+|--------------------------------------------------------------------------
+| BREVO SMTP SETTINGS
+|--------------------------------------------------------------------------
+*/
 
-        $mail->SMTPAuth = true;
+$mail->Host = 'smtp-relay.brevo.com';
 
-        $mail->Username = 'margeauxcosmetics16@gmail.com';
+$mail->SMTPAuth = true;
 
-        $mail->Password = 'piagntijndkisiko';
+/*
+|--------------------------------------------------------------------------
+| YOUR VERIFIED BREVO EMAIL
+|--------------------------------------------------------------------------
+*/
 
-        /*
-        |--------------------------------------------------------------------------
-        | IMPORTANT FIX FOR RAILWAY
-        |--------------------------------------------------------------------------
-        */
+$mail->Username = 'margeauxcosmetics16@gmail.com';
 
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+/*
+|--------------------------------------------------------------------------
+| YOUR BREVO SMTP KEY
+|--------------------------------------------------------------------------
+*/
 
-        $mail->Port = 465;
+$mail->Password = 'xsmtpsib-fc2697de645fd2b577bb01628bc6041ef583a23b153f0a64a90d0f2269b30fc3-SGpPylV7Pdcq6xcy
+';
 
-        $mail->SMTPOptions = [
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
-            ]
-        ];
+$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 
-        $mail->Timeout = 60;
+$mail->Port = 587;
 
+/*
+|--------------------------------------------------------------------------
+| OPTIONAL RAILWAY FIX
+|--------------------------------------------------------------------------
+*/
+
+$mail->SMTPOptions = [
+    'ssl' => [
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => true
+    ]
+];
+
+$mail->Timeout = 60;
         /*
         |--------------------------------------------------------------------------
         | Email Content
