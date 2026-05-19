@@ -167,7 +167,7 @@ $mail->Username = $smtpEmail;
 |--------------------------------------------------------------------------
 */
 
-$mail->Password = xsmtpsib-fc2697de645fd2b577bb01628bc6041ef583a23b153f0a64a90d0f2269b30fc3-SGpPylV7Pdcq6xcy;
+$mail->Password = 'xsmtpsib-fc2697de645fd2b577bb01628bc6041ef583a23b153f0a64a90d0f2269b30fc3-SGpPylV7Pdcq6xcy';
 
 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 
