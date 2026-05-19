@@ -164,7 +164,7 @@ try {
     |--------------------------------------------------------------------------
     */
 
-    $brevoApiKey = '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';
+    $brevoApiKey = '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';
 
 $emailData = [
     "sender" => [
