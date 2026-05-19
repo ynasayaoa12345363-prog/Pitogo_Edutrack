@@ -164,178 +164,97 @@ try {
     |--------------------------------------------------------------------------
     */
 
-    $mail = new PHPMailer(true);
+    $brevoApiKey = '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';
 
-    try {
+$emailData = [
+    "sender" => [
+        "name" => "Pitogo EduTrack Security",
+        "email" => "margeauxcosmetics16@gmail.com"
+    ],
+    "to" => [
+        [
+            "email" => $email,
+            "name" => $user['first_name'] . ' ' . $user['last_name']
+        ]
+    ],
+    "subject" => "Your Password Reset OTP - Pitogo EduTrack",
+    "htmlContent" => "
+        <div style='font-family:Arial,sans-serif;background:#f4f7fb;padding:24px;'>
 
-        $mail->isSMTP();
+            <div style='max-width:560px;
+                        margin:auto;
+                        background:#ffffff;
+                        border-radius:16px;
+                        padding:30px;
+                        border:1px solid #e2e8f0;'>
 
-/*
-|--------------------------------------------------------------------------
-| BREVO SMTP SETTINGS
-|--------------------------------------------------------------------------
-*/
+                <h2 style='color:#0B1C3D;'>
+                    Password Reset Request
+                </h2>
 
-$mail->Host = 'smtp-relay.brevo.com';
+                <p>
+                    Hello <b>{$user['first_name']}</b>,
+                </p>
 
-$mail->SMTPAuth = true;
+                <p>
+                    Your OTP is:
+                </p>
 
-/*
-|--------------------------------------------------------------------------
-| YOUR VERIFIED BREVO EMAIL
-|--------------------------------------------------------------------------
-*/
+                <h1 style='letter-spacing:7px;
+                           color:#0B1C3D;'>
 
-$mail->Username = 'margeauxcosmetics16@gmail.com';
+                    {$otp}
 
-/*
-|--------------------------------------------------------------------------
-| YOUR BREVO SMTP KEY
-|--------------------------------------------------------------------------
-*/
+                </h1>
 
-$mail->Password = 'xsmtpsib-fc2697de645fd2b577bb01628bc6041ef583a23b153f0a64a90d0f2269b30fc3-SGpPylV7Pdcq6xcy';
-
-$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-
-$mail->Port = 587;
-
-/*
-|--------------------------------------------------------------------------
-| OPTIONAL RAILWAY FIX
-|--------------------------------------------------------------------------
-*/
-
-$mail->SMTPOptions = [
-    'ssl' => [
-        'verify_peer' => false,
-        'verify_peer_name' => false,
-        'allow_self_signed' => true
-    ]
-];
-
-$mail->Timeout = 60;
-        /*
-        |--------------------------------------------------------------------------
-        | Email Content
-        |--------------------------------------------------------------------------
-        */
-
-        $mail->setFrom(
-            'margeauxcosmetics16@gmail.com',
-            'Pitogo EduTrack Security'
-        );
-
-        $mail->addAddress(
-            $email,
-            $user['first_name'] . ' ' . $user['last_name']
-        );
-
-        $mail->isHTML(true);
-
-        $mail->Subject =
-            'Your Password Reset OTP - Pitogo EduTrack';
-
-        $mail->Body = "
-            <div style='font-family: Arial, sans-serif;
-                        background:#f4f7fb;
-                        padding:24px;
-                        color:#1e293b;'>
-
-                <div style='max-width:560px;
-                            margin:auto;
-                            background:#ffffff;
-                            border-radius:16px;
-                            padding:30px;
-                            border:1px solid #e2e8f0;'>
-
-                    <h2 style='margin-top:0;
-                               color:#0B1C3D;'>
-
-                        Password Reset Request
-
-                    </h2>
-
-                    <p style='font-size:15px;'>
-
-                        Hello
-                        <b>{$user['first_name']}</b>,
-
-                    </p>
-
-                    <p style='font-size:15px;
-                              line-height:1.6;'>
-
-                        We received a request to reset your
-                        Pitogo EduTrack password.
-
-                    </p>
-
-                    <div style='text-align:center;
-                                margin:28px 0;'>
-
-                        <span style='display:inline-block;
-                                     background:#0B1C3D;
-                                     color:#ffffff;
-                                     font-size:30px;
-                                     letter-spacing:7px;
-                                     padding:16px 28px;
-                                     border-radius:12px;
-                                     font-weight:bold;'>
-
-                            {$otp}
-
-                        </span>
-
-                    </div>
-
-                    <p style='color:#ef4444;
-                              font-size:14px;
-                              font-weight:bold;'>
-
-                        This OTP will expire in 15 minutes.
-
-                    </p>
-
-                    <p style='font-size:13px;
-                              color:#64748b;'>
-
-                        If you did not request this,
-                        please ignore this email.
-
-                    </p>
-
-                </div>
+                <p>
+                    This OTP will expire in 15 minutes.
+                </p>
 
             </div>
-        ";
 
-        $mail->AltBody =
-            "Your OTP is {$otp}. "
-            . "This OTP expires in 15 minutes.";
+        </div>
+    "
+];
 
-        $mail->send();
+$ch = curl_init("https://api.brevo.com/v3/smtp/email");
 
-        respond(
-            true,
-            'OTP sent successfully. Please check your email.'
-        );
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_HTTPHEADER => [
+        "accept: application/json",
+        "api-key: {$brevoApiKey}",
+        "content-type: application/json"
+    ],
+    CURLOPT_POSTFIELDS => json_encode($emailData)
+]);
 
-    } catch (Exception $e) {
+$response = curl_exec($ch);
 
-        /*
-        |--------------------------------------------------------------------------
-        | IMPORTANT:
-        | Do NOT break system if SMTP fails
-        |--------------------------------------------------------------------------
-        */
+$error = curl_error($ch);
 
-        error_log(
-            "MAIL ERROR: " . $mail->ErrorInfo
-        );
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        respond(false, 'Email failed: ' . $mail->ErrorInfo);
-    }
+curl_close($ch);
+
+if ($error) {
+
+    respond(false, "Brevo API error: " . $error);
+}
+
+if ($httpCode >= 200 && $httpCode < 300) {
+
+    respond(
+        true,
+        "OTP sent successfully. Please check your email."
+    );
+}
+
+respond(
+    false,
+    "Brevo failed. HTTP {$httpCode}: {$response}"
+);
 
 } catch (PDOException $e) {
 
