@@ -186,111 +186,81 @@ function getRequesterInfo(PDO $pdo, int $requestId): array {
     return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
 }
 
-function sendDocumentOtpEmail(string $recipientEmail, string $recipientName, string $documentType, string $trackingId, string $otp): bool {
+function sendDocumentOtpEmail(
+    string $recipientEmail,
+    string $recipientName,
+    string $documentType,
+    string $trackingId,
+    string $otp
+): bool {
 
     if ($recipientEmail === '' || !filter_var($recipientEmail, FILTER_VALIDATE_EMAIL)) {
         return false;
     }
 
-    $mail = new PHPMailer(true);
+    $brevoApiKey = getenv('BREVO_API_KEY');
 
-    try {
+    $senderEmail =
+        getenv('BREVO_SENDER_EMAIL')
+        ?: 'margeauxcosmetics16@gmail.com';
 
-        $mail->isSMTP();
+    $senderName =
+        getenv('BREVO_SENDER_NAME')
+        ?: 'Pitogo EduTrack';
 
-        /*
-        |--------------------------------------------------------------------------
-        | BREVO SMTP SETTINGS
-        |--------------------------------------------------------------------------
-        */
+    if (!$brevoApiKey) {
 
-        $mail->Host = 'smtp-relay.brevo.com';
+        error_log('BREVO API KEY MISSING');
 
-        $mail->SMTPAuth = true;
+        return false;
+    }
 
-        /*
-        |--------------------------------------------------------------------------
-        | YOUR VERIFIED BREVO EMAIL
-        |--------------------------------------------------------------------------
-        */
+    $safeName = htmlspecialchars(
+        $recipientName ?: 'Requester',
+        ENT_QUOTES,
+        'UTF-8'
+    );
 
-        $mail->Username = 'margeauxcosmetics16@gmail.com';
+    $safeDoc = htmlspecialchars(
+        $documentType ?: 'Requested Document',
+        ENT_QUOTES,
+        'UTF-8'
+    );
 
-        /*
-        |--------------------------------------------------------------------------
-        | YOUR BREVO SMTP KEY
-        |--------------------------------------------------------------------------
-        */
+    $safeTracking = htmlspecialchars(
+        $trackingId ?: 'N/A',
+        ENT_QUOTES,
+        'UTF-8'
+    );
 
-        $mail->Password = 'xsmtpsib-fc2697de645fd2b577bb01628bc6041ef583a23b153f0a64a90d0f2269b30fc3-SGpPylV7Pdcq6xcy';
+    $safeOtp = htmlspecialchars(
+        $otp,
+        ENT_QUOTES,
+        'UTF-8'
+    );
 
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $emailData = [
 
-        $mail->Port = 587;
+        "sender" => [
+            "name" => $senderName,
+            "email" => $senderEmail
+        ],
 
-        /*
-        |--------------------------------------------------------------------------
-        | OPTIONAL FIXES FOR RAILWAY
-        |--------------------------------------------------------------------------
-        */
-
-        $mail->SMTPOptions = [
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
+        "to" => [
+            [
+                "email" => $recipientEmail,
+                "name" => $safeName
             ]
-        ];
+        ],
 
-        $mail->Timeout = 60;
+        "subject" =>
+            "Pitogo EduTrack Document Access OTP",
 
-        /*
-        |--------------------------------------------------------------------------
-        | EMAIL DETAILS
-        |--------------------------------------------------------------------------
-        */
+        "htmlContent" => "
 
-        $mail->setFrom(
-            'margeauxcosmetics16@gmail.com',
-            'Pitogo EduTrack'
-        );
-
-        $mail->addAddress(
-            $recipientEmail,
-            $recipientName ?: 'Requester'
-        );
-
-        $mail->isHTML(true);
-
-        $mail->Subject =
-            'Pitogo EduTrack Document Access OTP';
-
-        $safeName = htmlspecialchars(
-            $recipientName ?: 'Requester',
-            ENT_QUOTES,
-            'UTF-8'
-        );
-
-        $safeDoc = htmlspecialchars(
-            $documentType ?: 'Requested Document',
-            ENT_QUOTES,
-            'UTF-8'
-        );
-
-        $safeTracking = htmlspecialchars(
-            $trackingId ?: 'N/A',
-            ENT_QUOTES,
-            'UTF-8'
-        );
-
-        $safeOtp = htmlspecialchars(
-            $otp,
-            ENT_QUOTES,
-            'UTF-8'
-        );
-
-        $mail->Body = "
-            <div style='font-family:Arial,sans-serif;background:#f4f7fb;padding:25px;'>
+            <div style='font-family:Arial,sans-serif;
+                        background:#f4f7fb;
+                        padding:25px;'>
 
                 <div style='max-width:560px;
                             margin:auto;
@@ -300,11 +270,15 @@ function sendDocumentOtpEmail(string $recipientEmail, string $recipientName, str
                             border:1px solid #e5e7eb;'>
 
                     <h2 style='color:#0B1C3D;margin-top:0;'>
+
                         Pitogo EduTrack Document Access
+
                     </h2>
 
                     <p style='color:#334155;font-size:15px;'>
+
                         Hello <b>{$safeName}</b>,
+
                     </p>
 
                     <p style='color:#334155;
@@ -376,25 +350,70 @@ function sendDocumentOtpEmail(string $recipientEmail, string $recipientName, str
                 </div>
 
             </div>
-        ";
 
-        $mail->AltBody =
-            "Your Pitogo EduTrack document access OTP is: {$otp}";
+        "
+    ];
 
-        $mail->send();
+    $ch = curl_init(
+        "https://api.brevo.com/v3/smtp/email"
+    );
 
-        return true;
+    curl_setopt_array($ch, [
 
-    } catch (Exception $e) {
+        CURLOPT_RETURNTRANSFER => true,
+
+        CURLOPT_POST => true,
+
+        CURLOPT_HTTPHEADER => [
+
+            "accept: application/json",
+
+            "api-key: {$brevoApiKey}",
+
+            "content-type: application/json"
+
+        ],
+
+        CURLOPT_POSTFIELDS =>
+            json_encode($emailData),
+
+        CURLOPT_TIMEOUT => 60
+    ]);
+
+    $response = curl_exec($ch);
+
+    $error = curl_error($ch);
+
+    $httpCode = curl_getinfo(
+        $ch,
+        CURLINFO_HTTP_CODE
+    );
+
+    curl_close($ch);
+
+    if ($error) {
 
         error_log(
-            'BREVO MAIL ERROR: ' . $mail->ErrorInfo
+            'BREVO CURL ERROR: ' . $error
         );
 
         return false;
     }
-}
 
+    if ($httpCode >= 200 && $httpCode < 300) {
+
+        return true;
+    }
+
+    error_log(
+        'BREVO API ERROR: HTTP '
+        . $httpCode
+        . ' RESPONSE: '
+        . $response
+    );
+
+    return false;
+}
 
 function sendLinkedParentOtpEmails(PDO $pdo, int $studentId, string $requesterEmail, string $documentType, string $trackingId, string $otp): int {
     if ($studentId <= 0) {
