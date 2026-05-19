@@ -568,101 +568,195 @@ try {
     |--------------------------------------------------------------------------
     */
 
-    $mail = new PHPMailer(true);
-
-    try {
-        $mail->isSMTP();
-
-/*
+    /*
 |--------------------------------------------------------------------------
-| BREVO SMTP SETTINGS
+| SEND OTP EMAIL VIA BREVO API
 |--------------------------------------------------------------------------
 */
 
-$mail->Host = 'smtp-relay.brevo.com';
+$brevoApiKey = getenv('BREVO_API_KEY');
 
-$mail->SMTPAuth = true;
+$senderEmail =
+    getenv('BREVO_SENDER_EMAIL')
+    ?: 'margeauxcosmetics16@gmail.com';
 
-/*
-|--------------------------------------------------------------------------
-| YOUR VERIFIED BREVO EMAIL
-|--------------------------------------------------------------------------
-*/
+$senderName =
+    getenv('BREVO_SENDER_NAME')
+    ?: 'Pitogo EduTrack';
 
-$mail->Username = 'margeauxcosmetics16@gmail.com';
+if (!$brevoApiKey) {
 
-/*
-|--------------------------------------------------------------------------
-| YOUR BREVO SMTP KEY
-|--------------------------------------------------------------------------
-*/
+    die('Brevo API key missing in Railway Variables.');
+}
 
-$mail->Password = 'xsmtpsib-fc2697de645fd2b577bb01628bc6041ef583a23b153f0a64a90d0f2269b30fc3-SGpPylV7Pdcq6xcy';
+$safeFirstName = htmlspecialchars(
+    $firstName,
+    ENT_QUOTES,
+    'UTF-8'
+);
 
-$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+$emailData = [
 
-$mail->Port = 587;
+    "sender" => [
+        "name" => $senderName,
+        "email" => $senderEmail
+    ],
 
-/*
-|--------------------------------------------------------------------------
-| OPTIONAL RAILWAY FIX
-|--------------------------------------------------------------------------
-*/
+    "to" => [
+        [
+            "email" => $email,
+            "name" => trim($firstName . ' ' . $lastName)
+        ]
+    ],
 
-$mail->SMTPOptions = [
-    'ssl' => [
-        'verify_peer' => false,
-        'verify_peer_name' => false,
-        'allow_self_signed' => true
-    ]
+    "subject" =>
+        "Pitogo EduTrack Verification Code",
+
+    "htmlContent" => "
+
+        <div style='font-family:Arial,sans-serif;
+                    background:#f4f7fb;
+                    padding:25px;'>
+
+            <div style='max-width:520px;
+                        margin:auto;
+                        background:#ffffff;
+                        border-radius:14px;
+                        padding:30px;
+                        border:1px solid #e5e7eb;'>
+
+                <h2 style='color:#0B1C3D;
+                           margin-top:0;'>
+
+                    Pitogo EduTrack Verification
+
+                </h2>
+
+                <p style='color:#334155;
+                          font-size:15px;'>
+
+                    Hello <b>{$safeFirstName}</b>,
+
+                </p>
+
+                <p style='color:#334155;
+                          font-size:15px;
+                          line-height:1.6;'>
+
+                    Use the OTP below
+                    to verify your registration.
+                    This code will expire
+                    in 10 minutes.
+
+                </p>
+
+                <div style='text-align:center;
+                            margin:28px 0;'>
+
+                    <span style='display:inline-block;
+                                 background:#0B1C3D;
+                                 color:#ffffff;
+                                 font-size:28px;
+                                 letter-spacing:6px;
+                                 padding:14px 24px;
+                                 border-radius:10px;
+                                 font-weight:bold;'>
+
+                        {$otp}
+
+                    </span>
+
+                </div>
+
+                <p style='color:#64748b;
+                          font-size:13px;
+                          line-height:1.6;'>
+
+                    If you did not create
+                    this account,
+                    you can ignore this email.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    "
 ];
 
-$mail->Timeout = 60;
+/*
+|--------------------------------------------------------------------------
+| SEND REQUEST
+|--------------------------------------------------------------------------
+*/
 
-        $mail->setFrom('margeauxcosmetics16@gmail.com', 'Pitogo EduTrack');
-        $mail->addAddress($email, $firstName . ' ' . $lastName);
+$ch = curl_init(
+    "https://api.brevo.com/v3/smtp/email"
+);
 
-        $mail->isHTML(true);
-        $mail->Subject = 'Pitogo EduTrack Verification Code';
+curl_setopt_array($ch, [
 
-        $mail->Body = "
-            <div style='font-family:Arial,sans-serif; background:#f4f7fb; padding:25px;'>
-                <div style='max-width:520px; margin:auto; background:#ffffff; border-radius:14px; padding:30px; border:1px solid #e5e7eb;'>
-                    <h2 style='color:#0B1C3D; margin-top:0;'>Pitogo EduTrack Verification</h2>
+    CURLOPT_RETURNTRANSFER => true,
 
-                    <p style='color:#334155; font-size:15px;'>
-                        Hello <b>" . htmlspecialchars($firstName) . "</b>,
-                    </p>
+    CURLOPT_POST => true,
 
-                    <p style='color:#334155; font-size:15px; line-height:1.6;'>
-                        Use the OTP below to verify your registration. This code will expire in 10 minutes.
-                    </p>
+    CURLOPT_HTTPHEADER => [
 
-                    <div style='text-align:center; margin:28px 0;'>
-                        <span style='display:inline-block; background:#0B1C3D; color:#ffffff; font-size:28px; letter-spacing:6px; padding:14px 24px; border-radius:10px; font-weight:bold;'>
-                            {$otp}
-                        </span>
-                    </div>
+        "accept: application/json",
 
-                    <p style='color:#64748b; font-size:13px; line-height:1.6;'>
-                        If you did not create this account, you can ignore this email.
-                    </p>
-                </div>
-            </div>
-        ";
+        "api-key: {$brevoApiKey}",
 
-        $mail->AltBody = "Your Pitogo EduTrack verification code is: {$otp}";
+        "content-type: application/json"
 
-        $mail->send();
+    ],
 
-        $_SESSION['verify_email'] = $email;
-        header('Location: verify-otp.php');
-        exit();
+    CURLOPT_POSTFIELDS =>
+        json_encode($emailData),
 
-    } catch (Exception $e) {
-        echo 'Account was saved, but email sending failed. Mailer Error: ' . htmlspecialchars($mail->ErrorInfo);
-        exit();
-    }
+    CURLOPT_TIMEOUT => 60
+]);
+
+$response = curl_exec($ch);
+
+$error = curl_error($ch);
+
+$httpCode = curl_getinfo(
+    $ch,
+    CURLINFO_HTTP_CODE
+);
+
+curl_close($ch);
+
+/*
+|--------------------------------------------------------------------------
+| RESPONSE
+|--------------------------------------------------------------------------
+*/
+
+if ($error) {
+
+    die(
+        'Brevo API Error: '
+        . htmlspecialchars($error)
+    );
+}
+
+if ($httpCode >= 200 && $httpCode < 300) {
+
+    $_SESSION['verify_email'] = $email;
+
+    header('Location: verify-otp.php');
+
+    exit();
+}
+
+die(
+    'Brevo API Failed. HTTP '
+    . $httpCode
+    . ' RESPONSE: '
+    . htmlspecialchars($response)
+);
 
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {
