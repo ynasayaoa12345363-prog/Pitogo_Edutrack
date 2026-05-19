@@ -142,12 +142,52 @@ function sendOtpEmail($toEmail, $parentName, $otp, $smtpEmail, $smtpAppPassword,
 
     try {
         $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = $smtpEmail;
-        $mail->Password   = $smtpAppPassword;
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-        $mail->Port       = 465;
+
+/*
+|--------------------------------------------------------------------------
+| BREVO SMTP
+|--------------------------------------------------------------------------
+*/
+
+$mail->Host = 'smtp-relay.brevo.com';
+
+$mail->SMTPAuth = true;
+
+/*
+|--------------------------------------------------------------------------
+| YOUR VERIFIED BREVO EMAIL
+|--------------------------------------------------------------------------
+*/
+
+$mail->Username = $smtpEmail;
+
+/*
+|--------------------------------------------------------------------------
+| YOUR BREVO SMTP KEY
+|--------------------------------------------------------------------------
+*/
+
+$mail->Password = xsmtpsib-fc2697de645fd2b577bb01628bc6041ef583a23b153f0a64a90d0f2269b30fc3-SGpPylV7Pdcq6xcy;
+
+$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+
+$mail->Port = 587;
+
+/*
+|--------------------------------------------------------------------------
+| OPTIONAL RAILWAY FIX
+|--------------------------------------------------------------------------
+*/
+
+$mail->SMTPOptions = [
+    'ssl' => [
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => true
+    ]
+];
+
+$mail->Timeout = 60;
 
         $mail->setFrom($smtpEmail, $smtpFromName);
         $mail->addAddress($toEmail, $parentName);
